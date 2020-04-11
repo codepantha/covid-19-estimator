@@ -1,0 +1,14 @@
+{
+  "name": "covid-19-estimator-php",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:BuildforSDG-Cohort1-Assessment/covid-19-estimator-php.git",
+  "author": "Charles Odili",
+  "license": "MIT",
+  "scripts": {
+    "lint": "phplint src/**/*.php"
+  },
+  "devDependencies": {
+    "phplint": "^2.0.1"
+  }
+}
