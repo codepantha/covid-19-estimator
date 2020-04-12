@@ -1,8 +1,15 @@
 <?php
 
-$inputData = array();
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With");
 
-covid19ImpactEstimator($inputData);
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+  $inputData = json_decode(file_get_contents("php://input"));
+  echo covid19ImpactEstimator($inputData);
+}
 
 
 function covid19ImpactEstimator($data)
@@ -24,8 +31,8 @@ function covid19ImpactEstimator($data)
 
 function impact($data)
 {
-    $currentlyInfected =  $data['reportedCases'] * 10;
-    $infectionsByRequestedTime = infectionsByRequestedTime($data['periodType'], $data['timeToElapse'], $currentlyInfected);
+    $currentlyInfected =  $data->reportedCases * 10;
+    $infectionsByRequestedTime = infectionsByRequestedTime($data->periodType, $data->timeToElapse, $currentlyInfected);
 
     return [
         'currentlyInfected' => $currentlyInfected,
@@ -35,8 +42,8 @@ function impact($data)
 
 function severeImpact($data)
 {
-    $currentlyInfected = $data['reportedCases'] * 50;
-    $infectionsByRequestedTime = infectionsByRequestedTime($data['periodType'], $data['timeToElapse'], $currentlyInfected);
+    $currentlyInfected = $data->reportedCases * 50;
+    $infectionsByRequestedTime = infectionsByRequestedTime($data->periodType, $data->timeToElapse, $currentlyInfected);
 
     return [
         'currentlyInfected' => $currentlyInfected,
