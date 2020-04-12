@@ -1,7 +1,7 @@
 <?php
 
   $inputData = json_decode(file_get_contents("php://input"));
-  echo covid19ImpactEstimator($inputData);
+  covid19ImpactEstimator($inputData);
 
 
 function covid19ImpactEstimator($data)
