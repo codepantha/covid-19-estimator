@@ -1,16 +1,22 @@
 <?php
 
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With");
+$inputData = [
+    "region" => [
+        "name" => "Africa",
+        "avgAge" => 19.7,
+        "avgDailyIncomeInUSD" => 4,
+        "avgDailyIncomePopulation" => 0.73
+    ],
+    "periodType" => "days",
+    "timeToElapse" => 38,
+    "reportedCases" => 2747,
+    "population" => 92931687,
+    "totalHospitalBeds" => 678874
+];
 
+$data = json_decode((string)$inputData);
 
-
-$inputData = json_decode(file_get_contents("php://input"));
-echo covid19ImpactEstimator($inputData);
-
-
+echo covid19ImpactEstimator($data);
 
 function covid19ImpactEstimator($data)
 {
