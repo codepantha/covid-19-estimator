@@ -14,9 +14,7 @@ $inputData = [
     "totalHospitalBeds" => 678874
 ];
 
-$data = json_decode((string)$inputData);
-
-echo covid19ImpactEstimator($data);
+echo covid19ImpactEstimator($inputData);
 
 function covid19ImpactEstimator($data)
 {
@@ -37,8 +35,8 @@ function covid19ImpactEstimator($data)
 
 function impact($data)
 {
-    $currentlyInfected =  $data->reportedCases * 10;
-    $infectionsByRequestedTime = infectionsByRequestedTime($data->periodType, $data->timeToElapse, $currentlyInfected);
+    $currentlyInfected =  $data['reportedCases'] * 10;
+    $infectionsByRequestedTime = infectionsByRequestedTime($data['periodType'], $data['timeToElapse'], $currentlyInfected);
 
     return [
         'currentlyInfected' => $currentlyInfected,
@@ -48,8 +46,8 @@ function impact($data)
 
 function severeImpact($data)
 {
-    $currentlyInfected = $data->reportedCases * 50;
-    $infectionsByRequestedTime = infectionsByRequestedTime($data->periodType, $data->timeToElapse, $currentlyInfected);
+    $currentlyInfected = $data['reportedCases'] * 50;
+    $infectionsByRequestedTime = infectionsByRequestedTime($data['periodType'], $data['timeToElapse'], $currentlyInfected);
 
     return [
         'currentlyInfected' => $currentlyInfected,
