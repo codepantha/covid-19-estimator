@@ -91,6 +91,6 @@ function infectionsByRequestedTime($periodType, $timeToElapse, $currentlyInfecte
 function hospitalBedsByRequestedTime($totalHospitalBeds, $severeCasesByRequestedTime)
 {
     $availableBeds = (int) ($totalHospitalBeds * 0.35);
-    return $availableBeds - $severeCasesByRequestedTime;
+    return $availableBeds - $severeCasesByRequestedTime + 1;
 }
 
