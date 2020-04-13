@@ -36,7 +36,6 @@ function impact($data)
     $hospitalBedsByRequestedTime = hospitalBedsByRequestedTime($data['totalHospitalBeds'], $severeCasesByRequestedTime);
     $casesForICUByRequestedTime = (int) $infectionsByRequestedTime * 0.05;
     $casesForVentilatorsByRequestedTime = (int) ($infectionsByRequestedTime * 0.02);
-    $dollarsInFlight = (int) ($infectionsByRequestedTime * ($data['region']['avgDailyIncomePopulation']) * ($data['region']['avgDailyIncomeInUSD']) / ($data['timeToElapse']));
 
     return array(
         'currentlyInfected' => $currentlyInfected,
@@ -45,7 +44,7 @@ function impact($data)
         'hospitalBedsByRequestedTime' => $hospitalBedsByRequestedTime,
         'casesForICUByRequestedTime' => $casesForICUByRequestedTime,
         'casesForVentilatorsByRequestedTime' => $casesForVentilatorsByRequestedTime,
-        'dollarsInFlight' => $dollarsInFlight
+        'dollarsInFlight' => dollarsInFlight($infectionsByRequestedTime, $data['region']['avgDailyIncomeInUSD'], $data['region']['avgDailyIncomePopulation'], $data['timeToElapse'], $data['periodType'])
     );
 }
 
@@ -57,7 +56,6 @@ function severeImpact($data)
     $hospitalBedsByRequestedTime = hospitalBedsByRequestedTime($data['totalHospitalBeds'], $severeCasesByRequestedTime);
     $casesForICUByRequestedTime = (int) $infectionsByRequestedTime * 0.05;
     $casesForVentilatorsByRequestedTime = (int) ($infectionsByRequestedTime * 0.02);
-    $dollarsInFlight = (int) ($infectionsByRequestedTime * ($data['region']['avgDailyIncomePopulation']) * ($data['region']['avgDailyIncomeInUSD']) / ($data['timeToElapse']));
 
     return array(
         'currentlyInfected' => $currentlyInfected,
@@ -66,8 +64,24 @@ function severeImpact($data)
         'hospitalBedsByRequestedTime' => $hospitalBedsByRequestedTime,
         'casesForICUByRequestedTime' => $casesForICUByRequestedTime,
         'casesForVentilatorsByRequestedTime' => $casesForVentilatorsByRequestedTime,
-        'dollarsInFlight' => $dollarsInFlight
+        'dollarsInFlight' => dollarsInFlight($infectionsByRequestedTime, $data['region']['avgDailyIncomeInUSD'], $data['region']['avgDailyIncomePopulation'], $data['timeToElapse'], $data['periodType'])
     );
+}
+
+function dollarsInFlight($infectionsByRequestedTime, $avgDailyIncome, $avgPopulation, $timeToElapse, $periodType)
+{
+  if ($periodType === 'weeks') {
+      $timeToElapseInDays = $timeToElapse * 7;
+      return intdiv(($infectionsByRequestedTime * $avgDailyIncome * $avgPopulation), $timeToElapseInDays);
+  }
+  elseif ($periodType === 'months') {
+      $timeToElapseInDays = $timeToElapse * 30;
+      return intdiv(($infectionsByRequestedTime * $avgDailyIncome * $avgPopulation), $timeToElapseInDays);
+  }
+  else {
+      return intdiv(($infectionsByRequestedTime * $avgDailyIncome * $avgPopulation), $timeToElapse);
+  }
+  
 }
 
 function infectionsByRequestedTime($periodType, $timeToElapse, $currentlyInfected)
