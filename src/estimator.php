@@ -18,15 +18,15 @@ echo covid19ImpactEstimator($inputData);
 
 function covid19ImpactEstimator($data)
 {
-    $estimate = [
+    $estimate = array(
         'impact' => impact($data),
         'severeImpact' => severeImpact($data)
-    ];
+    );
 
-    $data = json_encode([
+    $data = array(
         'data' => $data,
         'estimate' => $estimate
-    ]);
+    );
 
     return $data;
 }
@@ -42,7 +42,7 @@ function impact($data)
     $casesForVentilatorsByRequestedTime = (int) $infectionsByRequestedTime * 0.02;
     $dollarsInFlight = (int) ($infectionsByRequestedTime * ($data['region']['avgDailyIncomePopulation']) * ($data['region']['avgDailyIncomeInUSD']) * ($data['timeToElapse']));
 
-    return [
+    return array(
         'currentlyInfected' => $currentlyInfected,
         'infectionsByRequestedTime' => $infectionsByRequestedTime,
         'severeCasesByRequestedTime' => $severeCasesByRequestedTime,
@@ -50,7 +50,7 @@ function impact($data)
         'casesForICUByRequestedTime' => $casesForICUByRequestedTime,
         'casesForVentilatorsByRequestedTime' => $casesForVentilatorsByRequestedTime,
         'dollarsInFlight' => $dollarsInFlight
-    ];
+    );
 }
 
 function severeImpact($data)
@@ -63,7 +63,7 @@ function severeImpact($data)
     $casesForVentilatorsByRequestedTime = (int) $infectionsByRequestedTime * 0.02;
     $dollarsInFlight = (int) ($infectionsByRequestedTime * ($data['region']['avgDailyIncomePopulation']) * ($data['region']['avgDailyIncomeInUSD']) * ($data['timeToElapse']));
 
-    return [
+    return array(
         'currentlyInfected' => $currentlyInfected,
         'infectionsByRequestedTime' => $infectionsByRequestedTime,
         'severeCasesByRequestedTime' => $severeCasesByRequestedTime,
@@ -71,7 +71,7 @@ function severeImpact($data)
         'casesForICUByRequestedTime' => $casesForICUByRequestedTime,
         'casesForVentilatorsByRequestedTime' => $casesForVentilatorsByRequestedTime,
         'dollarsInFlight' => $dollarsInFlight
-    ];
+    );
 }
 
 function infectionsByRequestedTime($periodType, $timeToElapse, $currentlyInfected)
