@@ -70,18 +70,17 @@ function severeImpact($data)
 
 function dollarsInFlight($infectionsByRequestedTime, $avgDailyIncome, $avgPopulation, $timeToElapse, $periodType)
 {
-  if ($periodType === 'weeks') {
-      $timeToElapseInDays = $timeToElapse * 7;
-      return intdiv(($infectionsByRequestedTime * $avgDailyIncome * $avgPopulation), $timeToElapseInDays);
-  }
-  elseif ($periodType === 'months') {
-      $timeToElapseInDays = $timeToElapse * 30;
-      return intdiv(($infectionsByRequestedTime * $avgDailyIncome * $avgPopulation), $timeToElapseInDays);
-  }
-  else {
-      return intdiv(($infectionsByRequestedTime * $avgDailyIncome * $avgPopulation), $timeToElapse);
-  }
-  
+    if ($periodType === 'weeks') {
+        $timeToElapseInDays = $timeToElapse * 7;
+        return intdiv(($infectionsByRequestedTime * $avgDailyIncome * $avgPopulation), $timeToElapseInDays);
+    }
+    elseif ($periodType === 'months') {
+        $timeToElapseInDays = $timeToElapse * 30;
+        return intdiv(($infectionsByRequestedTime * $avgDailyIncome * $avgPopulation), $timeToElapseInDays);
+    }
+    else {
+        return intdiv(($infectionsByRequestedTime * $avgDailyIncome * $avgPopulation), $timeToElapse);
+    }
 }
 
 function infectionsByRequestedTime($periodType, $timeToElapse, $currentlyInfected)
