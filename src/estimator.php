@@ -1,20 +1,23 @@
 <?php
 
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With");
+$inputData = array(
+    "region" => array (
+        "name" => "Africa",
+        "avgAge" => 19.7,
+        "avgDailyIncomeInUSD" => 4,
+        "avgDailyIncomePopulation" => 0.73
+    ),
+    "periodType" => "days",
+    "timeToElapse" => 38,
+    "reportedCases" => 2747,
+    "population" => 92931687,
+    "totalHospitalBeds" => 678874
+);
 
-
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $inputData = json_decode(file_get_contents("php://input"));
-    echo covid19ImpactEstimator($inputData);
-}
-
+echo covid19ImpactEstimator($inputData);
 
 function covid19ImpactEstimator($data)
 {
-
     $estimate = [
         'impact' => impact($data),
         'severeImpact' => severeImpact($data)
@@ -31,43 +34,43 @@ function covid19ImpactEstimator($data)
 
 function impact($data)
 {
-    $currentlyInfected =  $data->reportedCases * 10;
-    $infectionsByRequestedTime = infectionsByRequestedTime($data->periodType, $data->timeToElapse, $currentlyInfected);
+    $currentlyInfected =  $data['reportedCases'] * 10;
+    $infectionsByRequestedTime = infectionsByRequestedTime($data['periodType'], $data['timeToElapse'], $currentlyInfected);
     $severeCasesByRequestedTime = (int) $infectionsByRequestedTime * 0.15;
-    $totalHospitalBedsByRequestedTime = totalHospitalBedsByRequestedTime($data->totalHospitalBeds, $severeCasesByRequestedTime);
-    $casesForICUByRequestedTime = $infectionsByRequestedTime * 0.05;
-    $casesForVentilatorsByRequestedTime = $infectionsByRequestedTime * 0.02;
-    $dollarsInFlight = $infectionsByRequestedTime * ($data->region->avgDailyIncomePopulation) * ($data->region->avgDailyIncomeInUSD) * ($data->timeToElapse);
+    $totalHospitalBedsByRequestedTime = totalHospitalBedsByRequestedTime($data['totalHospitalBeds'], $severeCasesByRequestedTime);
+    $casesForICUByRequestedTime = (int) $infectionsByRequestedTime * 0.05;
+    $casesForVentilatorsByRequestedTime = (int) $infectionsByRequestedTime * 0.02;
+    $dollarsInFlight = (int) ($infectionsByRequestedTime * ($data['region']['avgDailyIncomePopulation']) * ($data['region']['avgDailyIncomeInUSD']) * ($data['timeToElapse']));
 
     return [
         'currentlyInfected' => $currentlyInfected,
         'infectionsByRequestedTime' => $infectionsByRequestedTime,
         'severeCasesByRequestedTime' => $severeCasesByRequestedTime,
         'totalHospitalBedsByRequestedTime' => $totalHospitalBedsByRequestedTime,
-        'casesForICUByRequestedTime' => (int) $casesForICUByRequestedTime,
-        'casesForVentilatorsByRequestedTime' => (int) $casesForVentilatorsByRequestedTime,
-        'dollarsInFlight' => (int) $dollarsInFlight
+        'casesForICUByRequestedTime' => $casesForICUByRequestedTime,
+        'casesForVentilatorsByRequestedTime' => $casesForVentilatorsByRequestedTime,
+        'dollarsInFlight' => $dollarsInFlight
     ];
 }
 
 function severeImpact($data)
 {
-    $currentlyInfected = $data->reportedCases * 50;
-    $infectionsByRequestedTime = infectionsByRequestedTime($data->periodType, $data->timeToElapse, $currentlyInfected);
+    $currentlyInfected =  $data['reportedCases'] * 50;
+    $infectionsByRequestedTime = infectionsByRequestedTime($data['periodType'], $data['timeToElapse'], $currentlyInfected);
     $severeCasesByRequestedTime = (int) $infectionsByRequestedTime * 0.15;
-    $totalHospitalBedsByRequestedTime = totalHospitalBedsByRequestedTime($data->totalHospitalBeds, $severeCasesByRequestedTime);
-    $casesForICUByRequestedTime = $infectionsByRequestedTime * 0.05;
-    $casesForVentilatorsByRequestedTime = $infectionsByRequestedTime * 0.02;
-    $dollarsInFlight = $infectionsByRequestedTime * $data->region->avgDailyIncomePopulation * $data->region->avgDailyIncomeInUSD * $data->timeToElapse;
+    $totalHospitalBedsByRequestedTime = totalHospitalBedsByRequestedTime($data['totalHospitalBeds'], $severeCasesByRequestedTime);
+    $casesForICUByRequestedTime = (int) $infectionsByRequestedTime * 0.05;
+    $casesForVentilatorsByRequestedTime = (int) $infectionsByRequestedTime * 0.02;
+    $dollarsInFlight = (int) ($infectionsByRequestedTime * ($data['region']['avgDailyIncomePopulation']) * ($data['region']['avgDailyIncomeInUSD']) * ($data['timeToElapse']));
 
     return [
         'currentlyInfected' => $currentlyInfected,
         'infectionsByRequestedTime' => $infectionsByRequestedTime,
         'severeCasesByRequestedTime' => $severeCasesByRequestedTime,
         'totalHospitalBedsByRequestedTime' => $totalHospitalBedsByRequestedTime,
-        'casesForICUByRequestedTime' => (int) $casesForICUByRequestedTime,
-        'casesForVentilatorsByRequestedTime' => (int) $casesForVentilatorsByRequestedTime,
-        'dollarsInFlight' => (int) $dollarsInFlight
+        'casesForICUByRequestedTime' => $casesForICUByRequestedTime,
+        'casesForVentilatorsByRequestedTime' => $casesForVentilatorsByRequestedTime,
+        'dollarsInFlight' => $dollarsInFlight
     ];
 }
 
