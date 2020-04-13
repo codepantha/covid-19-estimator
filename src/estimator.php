@@ -18,14 +18,12 @@ echo covid19ImpactEstimator($inputData);
 
 function covid19ImpactEstimator($data)
 {
-    $estimate = array(
-        'impact' => impact($data),
-        'severeImpact' => severeImpact($data)
-    );
-
     $data = array(
         'data' => $data,
-        'estimate' => $estimate
+        'estimate' => array(
+            'impact' => impact($data),
+            'severeImpact' => severeImpact($data)
+        )
     );
 
     return $data;
