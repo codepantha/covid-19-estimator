@@ -20,10 +20,8 @@ function covid19ImpactEstimator($data)
 {
     $data = array(
         'data' => $data,
-        'estimate' => array(
-            'impact' => impact($data),
-            'severeImpact' => severeImpact($data)
-        )
+        'impact' => impact($data),
+        'severeImpact' => severeImpact($data)
     );
 
     return $data;
@@ -95,3 +93,4 @@ function totalHospitalBedsByRequestedTime($totalHospitalBeds, $severeCasesByRequ
     $availableBeds = (int) ($totalHospitalBeds * 0.35);
     return $availableBeds - $severeCasesByRequestedTime;
 }
+
