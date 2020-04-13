@@ -55,8 +55,8 @@ function severeImpact($data)
     $infectionsByRequestedTime = infectionsByRequestedTime($data['periodType'], $data['timeToElapse'], $currentlyInfected);
     $severeCasesByRequestedTime = (int) $infectionsByRequestedTime * 0.15;
     $hospitalBedsByRequestedTime = hospitalBedsByRequestedTime($data['totalHospitalBeds'], $severeCasesByRequestedTime);
-    $casesForICUByRequestedTime = (int) $infectionsByRequestedTime * 0.05;
-    $casesForVentilatorsByRequestedTime = (int) $infectionsByRequestedTime * 0.02;
+    $casesForICUByRequestedTime = floor($infectionsByRequestedTime * 0.05);
+    $casesForVentilatorsByRequestedTime = floor($infectionsByRequestedTime * 0.02);
     $dollarsInFlight = (int) ($infectionsByRequestedTime * ($data['region']['avgDailyIncomePopulation']) * ($data['region']['avgDailyIncomeInUSD']) / ($data['timeToElapse']));
 
     return array(
@@ -90,7 +90,6 @@ function infectionsByRequestedTime($periodType, $timeToElapse, $currentlyInfecte
 
 function hospitalBedsByRequestedTime($totalHospitalBeds, $severeCasesByRequestedTime)
 {
-    $availableBeds = (int) ($totalHospitalBeds * 0.35);
-    return $availableBeds - $severeCasesByRequestedTime + 1;
+  return (int) (0.35 * $totalHospitalBeds - $severeCasesByRequestedTime);
 }
 
