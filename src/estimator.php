@@ -31,7 +31,7 @@ function covid19ImpactEstimator($data)
 function impact($data)
 {
     $currentlyInfected =  $data['reportedCases'] * 10;
-    $infectionsByRequestedTime = infectionsByRequestedTime($data['periodType'], $data['timeToElapse'], $currentlyInfected);
+    $infectionsByRequestedTime = floor(infectionsByRequestedTime($data['periodType'], $data['timeToElapse'], $currentlyInfected));
     $severeCasesByRequestedTime = (int) $infectionsByRequestedTime * 0.15;
     $hospitalBedsByRequestedTime = hospitalBedsByRequestedTime($data['totalHospitalBeds'], $severeCasesByRequestedTime);
     $casesForICUByRequestedTime = (int) $infectionsByRequestedTime * 0.05;
@@ -52,7 +52,7 @@ function impact($data)
 function severeImpact($data)
 {
     $currentlyInfected =  $data['reportedCases'] * 50;
-    $infectionsByRequestedTime = infectionsByRequestedTime($data['periodType'], $data['timeToElapse'], $currentlyInfected);
+    $infectionsByRequestedTime = floor(infectionsByRequestedTime($data['periodType'], $data['timeToElapse'], $currentlyInfected));
     $severeCasesByRequestedTime = (int) $infectionsByRequestedTime * 0.15;
     $hospitalBedsByRequestedTime = hospitalBedsByRequestedTime($data['totalHospitalBeds'], $severeCasesByRequestedTime);
     $casesForICUByRequestedTime = floor($infectionsByRequestedTime * 0.05);
